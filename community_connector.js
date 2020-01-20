@@ -49,24 +49,6 @@ function addPoints(data) {
   for(var row = 0; row < data.length; row++) {
     var marker = L.marker([data[row].Latitude, data[row].Longitude]).addTo(pointGroupLayer);
 
-    // UNCOMMENT THIS LINE TO USE POPUPS
-    //marker.bindPopup('<h2>' + data[row].location + '</h2>There's a ' + data[row].level + ' ' + data[row].category + ' here');
-
-    // COMMENT THE NEXT 14 LINES TO DISABLE SIDEBAR FOR THE MARKERS
-    // marker.feature = {
-    //   properties: {
-    //    Name: data[row].Name,
-    //     Hours: data[row].Hours      }
-    // };
-    // marker.on({
-    //   click: function(e) {
-    //     L.DomEvent.stopPropagation(e);
-    //     document.getElementById('sidebar-title').innerHTML = e.target.feature.properties.Name;
-    //     document.getElementById('sidebar-content').innerHTML = e.target.feature.properties.Hours;
-    //     sidebar.open(panelID);
-    //   }
-    // });
-
     // AwesomeMarkers is used to create fancier icons
     var icon = L.AwesomeMarkers.icon({
       icon: 'info-sign',
