@@ -60,9 +60,7 @@ function addPoints(data) {
     marker.setIcon(icon);
   }
 }
-
 //////////////////////////////////////////////////////////////////////////////////////////////
-
 function createPopupContent(feature) {
 
   // Initalise the container to hold the popup content - changed from html to marker
@@ -81,59 +79,61 @@ function createPopupContent(feature) {
   // Get the opening hours
   if( feature.properties.open('Opening Hours')) {
     marker += '<p class="Opening Hours">' +feature.properties.open+ '</p>';
+  }
 
   // Get the contact phone number
   if( feature.properties.phone('Phone')) {
     marker += '<p class="Phone">' +feature.properties.phone+ '</p>';
+  }
 
   // Get the contact email address
   if( feature.properties.email('Email')) {
     marker += '<p class="Email">' +feature.properties.email+ '</p>';
-
+  }  
   // Get the full website address
   if( feature.properties.website('Website')) {
     marker += '<p class="Website">' +feature.properties.website+ '</p>';
-
+  }  
 // Get the wheelchair access information
   if( feature.properties.wheelchair('Wheelchair Access?')) {
     marker += '<p class="Wheelchair Access?">' +feature.properties.wheelchair+ '</p>';
-
+  }
 // Get the wheelchair access information
   if( feature.properties.wheelchairinfo('Wheelchair Access - Description')) {
     marker += '<p class="Wheelchair Access - Description">' +feature.properties.wheelchairinfo+ '</p>';
-
+  }  
 // Get the disabled toilets information
   if( feature.properties.toilets('Disabled Toilets?')) {
     marker += '<p class="Disabled Toilets?">' +feature.properties.toilets+ '</p>';
-
+  }  
 // Get the WIFI
   if( feature.properties.wifi('WiFi?')) {
     marker += '<p class="WiFi?">' +feature.properties.wifi+ '</p>';
-
+  }  
 // Get the Smoking Area info
   if( feature.properties.smoking('Smoking Area?')) {
     marker += '<p class="Smoking Area?">' +feature.properties.smoking+ '</p>';
-
+  }  
 // Get the child area info
   if( feature.properties.child('Children Area?')) {
     marker += '<p class="Children Area?">' +feature.properties.child+ '</p>';
-
+  }  
 // Get the Outdoor seating info
   if( feature.properties.outdoor('Outdoor Seating?')) {
     marker += '<p class="Outdoor Seating?">' +feature.properties.outdoor+ '</p>';
-
+  }  
 // Get the food info
   if( feature.properties.food('Food?')) {
     marker += '<p class="Food?">' +feature.properties.food+ '</p>';
-
+  }  
 // Get the cuisine info
   if( feature.properties.cuisine('Cuisine')) {
     marker += '<p class="Cuisine">' +feature.properties.cuisine+ '</p>';
-
+  }  
 // Get any additional info
   if( feature.properties.extra('Additional Comments?')) {
     marker += '<p class="Additional Comments?">' +feature.properties.extra+ '</p>';
-
+  }  
   marker += '</div>'; // End .popup__content
   return html;
 }
@@ -147,6 +147,6 @@ function queryMarker(feature, layer) {
   layer.bindPopup(createPopupContent(feature));
 }
 
-L.geoJSON(markers, {
-    onEachFeature: queryMarker
-}).addTo(mymap);
+// L.geoJSON(markers, {
+//     onEachFeature: queryMarker
+//   }).addTo(map);
