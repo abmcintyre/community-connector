@@ -1,5 +1,3 @@
-/*Script to display data from Google Sheets as point and polygon layers using Leaflet - The Sheets are then imported using Tabletop.js and overwrite the initially laded layers
- */
 function init() {
   var communityconnectorURL = 'https://docs.google.com/spreadsheets/d/1W-popwonwLeqzMbuiP9LX0oR-swL8xcG3Ju4WEzR6B8/edit?usp=sharing';
 
@@ -89,30 +87,30 @@ function createPopupContent(feature) {
   var marker = '<div class="popup__content">';
 
   // Get the name
-  if( feature.properties.Name('Name')) {
-    marker += '<h2 class="Name">' +feature.properties.Name+ '</h2>';
+  if( feature.properties.name('Name')) {
+    marker += '<h2 class="Name">' +feature.properties.name+ '</h2>';
   }
 
   // Get the full address
-  if( feature.properties.Address('Address')) {
-    marker += '<p class="Address">' +feature.properties.Address+ '</p>';
+  if( feature.properties.address('Address')) {
+    marker += '<p class="Address">' +feature.properties.address+ '</p>';
   }
   
   // Get the opening hours
-  if( feature.properties.Opening_Hours('Opening Hours')) {
-    marker += '<p class="Opening Hours">' +feature.properties.Opening_Hours+ '</p>';
+  if( feature.properties.open('Opening Hours')) {
+    marker += '<p class="Opening Hours">' +feature.properties.open+ '</p>';
 
   // Get the contact phone number
-  if( feature.properties.Phone('Phone')) {
-    marker += '<p class="Phone">' +feature.properties.Phone+ '</p>';
+  if( feature.properties.phone('Phone')) {
+    marker += '<p class="Phone">' +feature.properties.phone+ '</p>';
 
   // Get the contact email address
-  if( feature.properties.Email('Email')) {
-    marker += '<p class="Email">' +feature.properties.Email+ '</p>';
+  if( feature.properties.email('Email')) {
+    marker += '<p class="Email">' +feature.properties.email+ '</p>';
 
   // Get the full website address
-  if( feature.properties.Website('Website')) {
-    marker += '<p class="Website">' +feature.properties.Website+ '</p>';
+  if( feature.properties.website('Website')) {
+    marker += '<p class="Website">' +feature.properties.website+ '</p>';
 
 // Get the wheelchair access information
   if( feature.properties.wheelchair('Wheelchair Access?')) {
@@ -170,43 +168,3 @@ function queryMarker(feature, layer) {
 L.geoJSON(markers, {
     onEachFeature: queryMarker
 }).addTo(mymap);
-
-
-
-
-
-/* Style the marker popup html */
-.site__name {
-    margin: 0 0 .8em 0;
-}
-
-.site__address {
-    font-size: 1.3em;
-}
-
-.site__availability {
-    max-width: 16em;
-}
-
-.site__availability ul {
-    padding: 0;
-    margin: 0 0 1.5em;
-    list-style: none;
-}
-
-.site__availability ul li {
-    margin-bottom: .8em;
-}
-
-/* Property name */
-.site__availability ul li span {
-    font-size: 1.4em;
-    font-weight: bold;
-    line-height: 1.5;
-}
-
-/* Property value (icon) */
-.site__availability__icon {
-    width: 2em;
-    float: right;
-}
