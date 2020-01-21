@@ -1,0 +1,192 @@
+/* 
+
+ @Subject: Connecting Communities Mapping Project
+ @File Format: JavaScript
+
+*/
+
+console.info("** Running communities map **");
+
+
+// // Add points
+
+// var pointGroupLayer;
+
+// function addPoints(data) {
+	// if (pointGroupLayer != null) {
+	// pointGroupLayer.remove();
+	// }
+	// pointGroupLayer = L.layerGroup().addTo(map);
+
+	// for(var row = 0; row < data.length; row++) {
+		// var marker = L.marker([data[row].Latitude, data[row].Longitude]).addTo(pointGroupLayer);
+	// };
+// };
+	
+function initMapLL(){
+	console.log("initMapLL");
+	
+	// Create the map
+	
+	// Add basemaps layers
+    
+	var mapboxstreet = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFyaW5hbGEiLCJhIjoiY2p0aDVvMm02MDd6bzQ0bnpqdjY3OHFrdCJ9.cY-gQZWm5ZYnCDy9lKHYLg', {
+        tileSize: 512,
+        zoomOffset: -1,
+        attribution: '© <a href="https://apps.mapbox.com/feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    });
+	
+	// var osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+       // attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    // });
+	
+	
+	// Set the map properties
+	var map = L.map('map', {
+		center: [54.41892996865827, -3.4716796874999996],
+		zoom: 5,
+		minZoom: 1,
+		maxZoom: 18,
+		layers: [mapboxstreet]
+	});
+	
+	mapboxstreet.addTo(map);
+	
+	// Set the basemaps
+	// var baseMaps = {
+		// "Mapbox Street Map": mapboxstreet,
+		// "Open Street Maps": osm
+	// };
+	
+	// Add the basemaps and the layers to the map
+	// L.control.layers(baseMaps).addTo(map);
+	
+
+	
+	// Add scale bar
+	
+	L.control.scale({position: 'bottomright'}).addTo(map);
+	
+	// Add search button
+	
+	map.addControl( new L.Control.Search({
+		url: 'https://nominatim.openstreetmap.org/search?format=json&q={s}',
+		jsonpParam: 'json_callback',
+		propertyName: 'display_name',
+		propertyLoc: ['lat','lon'],
+		marker: L.circleMarker([0,0],{radius:30}),
+		autoCollapse: true,
+		autoType: false,
+		minLength: 2
+	}) );
+
+	// Connect the Google Sheet with the map to show the locations of the points using Tabletop plugin
+
+	var pointGroupLayer;
+
+	Tabletop.init({
+		key: 'https://docs.google.com/spreadsheets/d/1iX7GTSLjSXuMoQkxPOfm1YUdWt5h4_tKnDpPiCFyHmQ/edit?usp=sharing',
+		// The links below work!
+		// key: 'https://docs.google.com/spreadsheets/d/1iX7GTSLjSXuMoQkxPOfm1YUdWt5h4_tKnDpPiCFyHmQ/edit?usp=sharing',
+		// key: 'https://docs.google.com/spreadsheets/d/1BaXZIexSQcNDk5lHwxdJJ7ta1lSncUex6eaSvHFQrhQ/edit?usp=sharing',
+		callback: function(sheet, tabletop){
+			for (var i in sheet){
+				var data = sheet[i];
+				
+				pointGroupLayer = L.layerGroup().addTo(map);
+					
+				var marker = L.marker([data.Latitude, data.Longitude]).addTo(pointGroupLayer);
+				
+				// var geojson = marker.toGeoJSON();
+				
+				// geojson.addTo(map);
+				// console.log(geojson);
+				
+				// var marker = points.toGeoJSON().addTo(pointGroupLayer);
+				
+				// marker.feature = {
+					// properties: {
+						// Name: data.Name,
+						// Hours: data.Hours,
+						// Phone: data.Phone
+					// }
+				// };
+				
+				// Change the design of the icons
+				var icon = L.AwesomeMarkers.icon({
+					icon: 'info-sign',
+					iconColor: 'white',
+					markerColor: 'red',
+					prefix: 'glyphicon',
+					extraClasses: 'fa-rotate-0'
+				});
+				marker.setIcon(icon);
+				
+				// geojson_points = L.GeoJSON(geojson).addTo(map);
+				// geojson.on({
+					// mouseover: info_points.update(marker.feature.properties),
+					// // mouseout: resetHighlight
+				// });
+
+				// function highlightFeature(e) {
+					// var layer = e.target;
+					// layer.setStyle({
+						// weight: 3,
+						// color: '#EBED32',
+						// dashArray: '',
+						// fillOpacity: 0.7
+						// });
+					// if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+						// geojson.bringToFront();
+					// };
+					// info_points.update(geojson.feature.properties);
+				// }
+	
+				// On Mouseout	
+				// Function for each layer to reset the information div every time the user clicks somewhere on the map
+				// It also resets the highlighted points
+				
+				// function resetHighlight(e) {
+					// geojson.resetStyle(e.target),
+					// info_points.update();
+				// }
+
+				
+				// function onEachFeature() {
+					// geojson.on({
+						// mouseover: highlightFeature,
+						// mouseout: resetHighlight
+					// })
+				// }
+			}
+		},
+		debug: true,
+		simpleSheet: true 
+	})
+	
+	
+	// Create an information div to show each OA's data separately for each layer when the user taps on an area
+	var info_points = L.control({position: 'topleft'});
+
+	
+	
+	// Create information divs for each Layer //
+	
+	info_points.onAdd = function (map) {
+		this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+		this.update();
+		return this._div;
+	};
+	
+	info_points.update = function (props) {
+		this._div.innerHTML = '<h4>Location Information</h4>' +  (props ?
+			'<b>' + '<h3>Test<h3>' + '<b>' + '<h3>the properties: <h3>' + props.Name + '<b>' + '<h3>of the point: <h3>' + props.Phone + '<br>' + '<br>' + "<h8>Ignore:</h8>" + '<br>' + "<h8>ignore</h8>"
+			: 'Tap on a location')};
+	
+
+	
+	// Add information div
+	info_points.addTo(map);
+	
+	window.addEventListener('DOMContentLoaded', map);
+};

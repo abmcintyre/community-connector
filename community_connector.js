@@ -34,6 +34,7 @@ map.addControl( new L.Control.Search({
     autoCollapse: true,
     autoType: false,
     minLength: 2
+}));
 
 var sidebar = L.control.sidebar({
   container: 'sidebar',
